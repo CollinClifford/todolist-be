@@ -1,5 +1,5 @@
 const service = require("./todos.service.js");
-const properties = require("../errors/hasProperties")
+const properties = require("../errors/hasProperties");
 const errorBoundary = require("../errors/asyncErrorBoundary");
 
 const VALID_PROPERTIES = ["title", "description", "due_date", "tags"];
@@ -32,7 +32,6 @@ async function toDoExists(req, res, next) {
 
 function readItem(req, res) {
   const { todo: data } = res.locals;
-  console.log({ data });
   res.json({ data });
 }
 
@@ -44,6 +43,15 @@ async function listItems(req, res) {
 async function createItem(req, res) {
   const data = await service.createI(req.body.data);
   res.status(201).json({ data });
+}
+
+async function updateItem(req, res) {
+  const updatedToDo = {
+    ...req.body.data,
+    id: res.locals.todo.id,
+  };
+  const data = await service.updateI(updatedToDo);
+  res.json({ data });
 }
 
 async function destroyItem(req, res) {
@@ -59,6 +67,12 @@ module.exports = {
     hasOnlyValidProperties,
     hasRequiredProperties,
     errorBoundary(createItem),
+  ],
+  update: [
+    errorBoundary(toDoExists),
+    hasOnlyValidProperties,
+    hasRequiredProperties,
+    errorBoundary(updateItem),
   ],
   delete: [errorBoundary(toDoExists), errorBoundary(destroyItem)],
 };

@@ -1,3 +1,14 @@
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -69,7 +80,6 @@ function toDoExists(req, res, next) {
 }
 function readItem(req, res) {
     var data = res.locals.todo;
-    console.log({ data: data });
     res.json({ data: data });
 }
 function listItems(req, res) {
@@ -100,6 +110,22 @@ function createItem(req, res) {
         });
     });
 }
+function updateItem(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var updatedToDo, data;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    updatedToDo = __assign(__assign({}, req.body.data), { id: res.locals.todo.id });
+                    return [4 /*yield*/, service.updateI(updatedToDo)];
+                case 1:
+                    data = _a.sent();
+                    res.json({ data: data });
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
 function destroyItem(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var todo;
@@ -123,6 +149,12 @@ module.exports = {
         hasOnlyValidProperties,
         hasRequiredProperties,
         errorBoundary(createItem),
+    ],
+    update: [
+        errorBoundary(toDoExists),
+        hasOnlyValidProperties,
+        hasRequiredProperties,
+        errorBoundary(updateItem),
     ],
     delete: [errorBoundary(toDoExists), errorBoundary(destroyItem)],
 };
