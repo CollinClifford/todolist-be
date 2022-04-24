@@ -1,31 +1,32 @@
 const { idleTimeoutMillis } = require("pg/lib/defaults");
-const knex = require("../db/connection");
-function list() {
+knex = require("../db/connection");
+
+function listI() {
   return knex("todos").select("*");
 }
 
-function read(id) {
-  return knex("todos").select("*").where({ id }).then(console.log).first();
-}
+// function readI(id) {
+//   return knex("todos").select("*").where({ id }).then(console.log).first();
+// }
 
-function create(todo) {
+function createI(todo) {
   return knex("todos")
     .insert(todo)
     .returning("*")
     .then((createdRecords) => createdRecords[0]);
 }
 
-function read(id) {
+function readI(id) {
   return knex("todos").select("*").where({ id: id }).first();
 }
 
-function destroy(id) {
+function destroyI(id) {
   return knex("todos").where({ id: id }).del();
 }
 
 module.exports = {
-  list,
-  create,
-  read,
-  delete: destroy,
+  listI,
+  createI,
+  readI,
+  deleteI: destroyI,
 };

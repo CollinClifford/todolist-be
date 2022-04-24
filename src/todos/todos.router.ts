@@ -1,16 +1,16 @@
-const router = require("express").Router();
+let router = require("express").Router();
 const controller = require("./todos.controller");
-const methodNotAllowed = require("../errors/methodNotAllowed");
+let notAllowed = require("../errors/methodNotAllowed");
 
 router
   .route("/")
   .get(controller.list)
   .post(controller.create)
-  .all(methodNotAllowed);
+  .all(notAllowed);
 router
   .route("/:id([0-9]+)")
   .get(controller.read)
   .delete(controller.delete)
-  .all(methodNotAllowed);
+  .all(notAllowed);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const service = require("./todos.service.js");
-const hasProperties = require("../errors/hasProperties");
-const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+const properties = require("../errors/hasProperties")
+const errorBoundary = require("../errors/asyncErrorBoundary");
 
 const VALID_PROPERTIES = ["title", "description", "due_date", "tags"];
 
@@ -19,10 +19,10 @@ function hasOnlyValidProperties(req, res, next) {
   next();
 }
 
-const hasRequiredProperties = hasProperties("title", "description");
+const hasRequiredProperties = properties("title", "description");
 
 async function toDoExists(req, res, next) {
-  const todo = await service.read(req.params.id);
+  const todo = await service.readI(req.params.id);
   if (todo) {
     res.locals.todo = todo;
     return next();
@@ -30,35 +30,35 @@ async function toDoExists(req, res, next) {
   next({ status: 404, message: `To Do Item cannot be found.` });
 }
 
-function read(req, res) {
+function readItem(req, res) {
   const { todo: data } = res.locals;
   console.log({ data });
   res.json({ data });
 }
 
-async function list(req, res) {
-  const data = await service.list();
+async function listItems(req, res) {
+  const data = await service.listI();
   res.json({ data });
 }
 
-async function create(req, res) {
-  const data = await service.create(req.body.data);
+async function createItem(req, res) {
+  const data = await service.createI(req.body.data);
   res.status(201).json({ data });
 }
 
-async function destroy(req, res) {
+async function destroyItem(req, res) {
   const { todo } = res.locals;
-  await service.delete(todo.id);
+  await service.deleteI(todo.id);
   res.sendStatus(204);
 }
 
 module.exports = {
-  list: asyncErrorBoundary(list),
-  read: [asyncErrorBoundary(toDoExists), read],
+  list: errorBoundary(listItems),
+  read: [errorBoundary(toDoExists), readItem],
   create: [
     hasOnlyValidProperties,
     hasRequiredProperties,
-    asyncErrorBoundary(create),
+    errorBoundary(createItem),
   ],
-  delete: [asyncErrorBoundary(toDoExists), asyncErrorBoundary(destroy)],
+  delete: [errorBoundary(toDoExists), errorBoundary(destroyItem)],
 };
