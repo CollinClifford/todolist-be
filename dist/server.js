@@ -1,5 +1,5 @@
 var _a = process.env.PORT, PORT = _a === void 0 ? 5000 : _a;
-app = require("./app");
+var app = require("./app");
 knex = require("./db/connection");
 knex.migrate
     .latest()

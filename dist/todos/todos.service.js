@@ -1,5 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var idleTimeoutMillis = require("pg/lib/defaults").idleTimeoutMillis;
-knex = require("../db/connection");
+var knex = require("../db/connection");
 function listI() {
     return knex("todos").select("*");
 }

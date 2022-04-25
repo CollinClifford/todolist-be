@@ -1,3 +1,4 @@
+"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -45,6 +46,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var service = require("./todos.service.js");
 var properties = require("../errors/hasProperties");
 var errorBoundary = require("../errors/asyncErrorBoundary");
@@ -59,7 +61,7 @@ function hasOnlyValidProperties(req, res, next) {
         });
     next();
 }
-var hasRequiredProperties = properties("title", "description");
+var hasRequiredProperties = properties("title", "description"); // <--- type
 function toDoExists(req, res, next) {
     return __awaiter(this, void 0, void 0, function () {
         var todo;

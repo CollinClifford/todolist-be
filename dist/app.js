@@ -1,12 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var path = require("path");
 require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
 var express = require("express");
 var cors = require("cors");
-router = require("./todos/todos.router");
+var router = require("./todos/todos.router");
 var app = express();
 app.use(cors());
 app.use(express.json());
-app.use("/data", router);
+app.use("/todos", router);
 app.use(function (req, res, next) {
     next({ status: 404, message: "Path not found: ".concat(req.originalUrl) });
 });

@@ -1,10 +1,16 @@
 const service = require("./todos.service.js");
 const properties = require("../errors/hasProperties");
 const errorBoundary = require("../errors/asyncErrorBoundary");
+import { Request, Response, NextFunction } from "express";
+import { toDo } from "../helpers";
 
-const VALID_PROPERTIES = ["title", "description", "due_date", "tags"];
+const VALID_PROPERTIES: string[] = ["title", "description", "due_date", "tags"];
 
-function hasOnlyValidProperties(req, res, next) {
+function hasOnlyValidProperties(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const { data = {} } = req.body;
 
   const invalidFields = Object.keys(data).filter(
@@ -19,10 +25,10 @@ function hasOnlyValidProperties(req, res, next) {
   next();
 }
 
-const hasRequiredProperties = properties("title", "description");
+const hasRequiredProperties = properties("title", "description"); // <--- type
 
-async function toDoExists(req, res, next) {
-  const todo = await service.readI(req.params.id);
+async function toDoExists(req: Request, res: Response, next: NextFunction) {
+  const todo: toDo = await service.readI(req.params.id);
   if (todo) {
     res.locals.todo = todo;
     return next();
@@ -30,22 +36,22 @@ async function toDoExists(req, res, next) {
   next({ status: 404, message: `To Do Item cannot be found.` });
 }
 
-function readItem(req, res) {
-  const { todo: data } = res.locals;
+function readItem(req: Request, res: Response) {
+  const { todo: data }: Record<string, toDo> = res.locals;
   res.json({ data });
 }
 
-async function listItems(req, res) {
-  const data = await service.listI();
+async function listItems(req: Request, res: Response) {
+  const data: toDo = await service.listI();
   res.json({ data });
 }
 
-async function createItem(req, res) {
-  const data = await service.createI(req.body.data);
+async function createItem(req: Request, res: Response) {
+  const data: toDo = await service.createI(req.body.data);
   res.status(201).json({ data });
 }
 
-async function updateItem(req, res) {
+async function updateItem(req: Request, res: Response) {
   const updatedToDo = {
     ...req.body.data,
     id: res.locals.todo.id,
@@ -54,8 +60,8 @@ async function updateItem(req, res) {
   res.json({ data });
 }
 
-async function destroyItem(req, res) {
-  const { todo } = res.locals;
+async function destroyItem(req: Request, res: Response) {
+  const { todo }: Record<string, toDo> = res.locals;
   await service.deleteI(todo.id);
   res.sendStatus(204);
 }
