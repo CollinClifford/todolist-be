@@ -4,7 +4,7 @@ const errorBoundary = require("../errors/asyncErrorBoundary");
 import { Request, Response, NextFunction } from "express";
 import { toDo } from "../helpers";
 
-const VALID_PROPERTIES: string[] = ["title", "description", "due_date", "tags"];
+const VALID_PROPERTIES: string[] = ["id", "title", "description", "due_date", "tags"];
 
 function hasOnlyValidProperties(
   req: Request,
