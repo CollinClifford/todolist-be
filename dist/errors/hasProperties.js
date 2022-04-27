@@ -1,14 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+// makes sure all exisiting properties are accounted for.
 function hasProperties() {
     var properties = [];
     for (var _i = 0; _i < arguments.length; _i++) {
         properties[_i] = arguments[_i];
     }
     return function (res, req, next) {
-        //<--- type
-        var _a = res.body.data, data = _a === void 0 ? {} : _a; // <--- type
-        console.log("data inside", { data: data });
+        var _a = res.body.data, data = _a === void 0 ? {} : _a;
         try {
             properties.forEach(function (property) {
                 if (!data[property]) {

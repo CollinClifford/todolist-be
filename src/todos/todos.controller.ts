@@ -4,6 +4,7 @@ const errorBoundary = require("../errors/asyncErrorBoundary");
 import { Request, Response, NextFunction } from "express";
 import { toDo } from "../helpers";
 
+// simple error handling to make sure all required fields are presented before going to the database.
 const VALID_PROPERTIES: string[] = ["id", "title", "description", "due_date", "tags", "created_at", "updated_at"];
 
 function hasOnlyValidProperties(
@@ -25,8 +26,9 @@ function hasOnlyValidProperties(
   next();
 }
 
-const hasRequiredProperties = properties("title", "description"); // <--- type
+const hasRequiredProperties: object = properties("title", "description");
 
+// simple error handling to make sure id exists
 async function toDoExists(req: Request, res: Response, next: NextFunction) {
   const todo: toDo = await service.readI(req.params.id);
   if (todo) {
@@ -36,6 +38,7 @@ async function toDoExists(req: Request, res: Response, next: NextFunction) {
   next({ status: 404, message: `To Do Item cannot be found.` });
 }
 
+// CRUD
 function readItem(req: Request, res: Response) {
   const { todo: data }: Record<string, toDo> = res.locals;
   res.json({ data });

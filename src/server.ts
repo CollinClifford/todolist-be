@@ -3,6 +3,7 @@ const { PORT = 5000 } = process.env;
 const app = require("./app");
 knex = require("./db/connection");
 
+//migrates database before starting server
 knex.migrate
   .latest()
   .then((migrations) => {

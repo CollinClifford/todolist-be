@@ -15,6 +15,7 @@ app.use(express.json());
 
 app.use("/todos", router);
 
+// simple error handling
 app.use((req: Request, res: Response, next: NextFunction) => {
   next({ status: 404, message: `Path not found: ${req.originalUrl}` });
 });

@@ -9,6 +9,7 @@ var app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/todos", router);
+// simple error handling
 app.use(function (req, res, next) {
     next({ status: 404, message: "Path not found: ".concat(req.originalUrl) });
 });

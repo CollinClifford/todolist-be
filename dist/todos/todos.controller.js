@@ -50,7 +50,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var service = require("./todos.service.js");
 var properties = require("../errors/hasProperties");
 var errorBoundary = require("../errors/asyncErrorBoundary");
-var VALID_PROPERTIES = ["id", "title", "description", "due_date", "tags"];
+// simple error handling to make sure all required fields are presented before going to the database.
+var VALID_PROPERTIES = ["id", "title", "description", "due_date", "tags", "created_at", "updated_at"];
 function hasOnlyValidProperties(req, res, next) {
     var _a = req.body.data, data = _a === void 0 ? {} : _a;
     var invalidFields = Object.keys(data).filter(function (field) { return !VALID_PROPERTIES.includes(field); });
@@ -61,7 +62,8 @@ function hasOnlyValidProperties(req, res, next) {
         });
     next();
 }
-var hasRequiredProperties = properties("title", "description"); // <--- type
+var hasRequiredProperties = properties("title", "description");
+// simple error handling to make sure id exists
 function toDoExists(req, res, next) {
     return __awaiter(this, void 0, void 0, function () {
         var todo;
@@ -80,6 +82,7 @@ function toDoExists(req, res, next) {
         });
     });
 }
+// CRUD
 function readItem(req, res) {
     var data = res.locals.todo;
     res.json({ data: data });

@@ -2,12 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import { Err } from "../helpers";
 import { toDo } from "../helpers";
 
+// makes sure all exisiting properties are accounted for.
 function hasProperties(...properties) {
   return function (res, req: Request, next: NextFunction) {
-    //<--- type
-    const { data = {} } = res.body; // <--- type
-    console.log("data inside", { data });
-
+    const { data = {} }: Record<string, {}> = res.body;
     try {
       properties.forEach((property) => {
         if (!data[property]) {

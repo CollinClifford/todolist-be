@@ -4,7 +4,7 @@
  */
 exports.up = function (knex) {
     return knex.schema.createTable("todos", function (table) {
-        table.increments("id").primary(); // sets supplier_id as the primary key
+        table.increments("id").primary();
         table.string("title");
         table.string("description");
         table.string("due_date");
